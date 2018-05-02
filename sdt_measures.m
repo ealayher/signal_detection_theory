@@ -1,5 +1,6 @@
 function [d, c, cPrime, beta, lnBeta, A, B] = sdt_measures(hits, misses, CRs, FAs, varargin)
 % sdt_measures.m: Signal detection theory
+% function [d, c, cPrime, beta, lnBeta, A, B] = sdt_measures(hits, misses, CRs, FAs, varargin)
 %
 % Created: 02/19/2018, Evan Layher
 % Revised: 03/11/2018, Evan Layher % Added more output measures

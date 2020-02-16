@@ -1,6 +1,6 @@
 function [nc, resid, slope, int, r, r2] = normalized_criterion(cVec, dVec)
 % normalized_criterion.m: Residualize c against d' to get normalized c values
-% function [nc, resid, slope, int, r, r2] = normalized_criterion(dVec, cVec)
+% function [nc, resid, slope, int, r, r2] = normalized_criterion(cVec, dVec)
 % 
 % Created: 04/10/2018, Evan Layher
 % Revised: 05/02/2018, Evan Layher % Added residuals output

@@ -1,14 +1,15 @@
-function [normCs, residuals, slope, intercept, r, r2] = normalized_criterion(dVec, cVec)
-% normalized_criterion.m: Remove explained variance of d' from criterion values
-% function [normCs, residuals, slope, intercept, r, r2] = normalized_criterion(dVec, cVec)
+function [nc, resid, slope, int, r, r2] = normalized_criterion(cVec, dVec)
+% normalized_criterion.m: Residualize c against d' to get normalized c values
+% function [nc, resid, slope, int, r, r2] = normalized_criterion(dVec, cVec)
 % 
 % Created: 04/10/2018, Evan Layher
 % Revised: 05/02/2018, Evan Layher % Added residuals output
+% Revised: 02/16/2020, Evan Layher % Fixed cSq calculation & minor updates
 % 
 % --- LICENSE INFORMATION --- %
 % Modified BSD-2 License - for Non-Commercial Use Only
 %
-% Copyright (c) 2018, The Regents of the University of California
+% Copyright (c) 2018-20, The Regents of the University of California
 % All rights reserved.
 %
 % Redistribution and use in source and binary forms, with or without modification, are 
@@ -43,34 +44,35 @@ function [normCs, residuals, slope, intercept, r, r2] = normalized_criterion(dVe
 % (1) dVec: Vector of d' values
 % (2) cVec: Vector of criterion values
 %
-% Outputs (6): normCs, residuals, slope, intercept, r, r2
-% (1) normCs: normalized criterion values (residuals + criterion mean)
-% (2) residuals: residual values only
+% Outputs:
+% (1) nc: normalized criterion values (residuals + criterion mean)
+% (2) resid: residual values
 % (3) slope: regression slope
-% (4) intercept: regression intercept
+% (4) int: regression intercept
 % (5) r: Pearson's r
 % (6) r2: Pearson's r^2
 
-if length(dVec) ~= length(cVec)
-    fprintf('VECTORS MUST BE OF SAME LENGTH\n')
+if length(cVec) ~= length(dVec)
+    fprintf('VECTOR LENGTHS MUST BE EQUAL: "cVec" (%d) and "dVec" (%d)\n', ...
+        length(cVec), length(dVec))
 end
 
-meanDs = mean(dVec); % Average d' (x)
-meanCs = mean(cVec); % Average criterion (y)
+mDs = mean(dVec); % Average d' (x)
+mCs = mean(cVec); % Average criterion (y)
 
-sumDsqrs = sum((dVec - meanDs) .^ 2); % Sum of d' squares (x)
-sumCsqrs = sum((cVec - meanDs) .^ 2); % Sum of c squares (y)
-sumDCs = sum((dVec - meanDs) .* (cVec - meanCs)); % Sum of criterion x d' squares (y)
+cSq = sum((cVec - mCs) .^ 2); % Sum of c squares (y) ** FIXED: 02/16/2020 **
+dSq = sum((dVec - mDs) .^ 2); % Sum of d' squares (x)
+cdSq = sum((dVec - mDs) .* (cVec - mCs)); % Sum of criterion x d' squares (y)
     
-slope = sumDCs / sumDsqrs;
-intercept = meanCs - (slope * meanDs);
+slope = cdSq / dSq;
+int = mCs - (slope * mDs);
 
-r = sumDCs / sqrt((sumDsqrs * sumCsqrs)); % pearson's r
+r = cdSq / sqrt((dSq * cSq)); % pearson's r
 r2 = r ^ 2; % Variance explained (%)
 
-lineCvec = slope .* dVec + intercept; % mx + b
+ln = slope .* dVec + int; % y = mx + b
 
-residuals = (cVec - lineCvec); % Residuals from regression
-normCs = residuals + meanCs; % Residuals + mean
+resid = (cVec - ln); % Residuals from regression
+nc = resid + mCs; % Residuals + mean
 end
 

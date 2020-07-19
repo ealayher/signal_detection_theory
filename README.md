@@ -3,7 +3,7 @@ Signal Detection Theory
 
 Calculations for signal detection theory
 
-**normc.R** (obsolete: **normalized_criterion.m**)
+**normc.R** (obsolete: **normalized_criterion.m**)  
 Function that residualizes c with d' to get normalized c values
 
 **sdt.R** (obsolete: **sdt_measures.m**)  

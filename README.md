@@ -3,8 +3,11 @@ Signal Detection Theory
 
 Calculations for signal detection theory
 
-**sdt_measures.m**  
-Function that calculates discriminability (d' and A') and criterion values (c, c', beta, ln(beta), B'').
+**normc.R** (obsolete: **normalized_criterion.m**)
+Function that residualizes c with d' to get normalized c values
+
+**sdt.R** (obsolete: **sdt_measures.m**)  
+Function that calculates signal detection measures: c, d', Beta, ln(Beta) [equal or unequal variance (least squares fit of zROC slope)].
 
 **sdt_optimal_c.m**  
 Function that calculates the optimal criterion given a level of d' and the target probability.
